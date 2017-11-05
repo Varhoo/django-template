@@ -2,22 +2,27 @@
 - hosts: all
   remote_user: root
   vars:
-    project_name: "proj"
-    user:         "proj"
+    # project
+    domain:       "example.com"
+    proj:         "proj"
     port:         "8001"
     db:           "postgresql"
-    home:         "/var/www/{{project_name}}"
-    docker_home:  "/data/proj"
+    # host
+    user:         "{{ proj }}"
+    email:         "root@localhost"
+    home:         "/var/www/{{ proj }}"
+    # docker guest
+    docker_home:  "/data/{{ proj }}"
     # don't change
-    image:        "{{project_name}}.docker"
+    image:        "{{proj}}.docker"
 
   tasks:
-  - name: Compile {{project_name}} image
-    command: docker build -t {{project_name}} .
+  - name: Compile {{proj}} image
+    command: docker build -t {{proj}} .
     delegate_to: localhost
     
   - name: Export image to file
-    command: docker save -o {{image}} {{project_name}}
+    command: docker save -o {{image}} {{proj}}
     delegate_to: localhost
 
   - copy: src={{image}} dest=/tmp/{{image}}
@@ -27,7 +32,7 @@
     delegate_to: localhost
 
   - name: Info about running docker instance
-    shell: docker inspect {{project_name}}:latest
+    shell: docker inspect {{proj}}:latest
     register: result
     ignore_errors: yes
 
@@ -35,32 +40,39 @@
         var: result
 
   - name: Rename old image by tag
-    shell:  docker tag $( docker images {{project_name}}:latest -q )  {{project_name}}:$(date +"%x-%H.%M")
+    shell:  docker tag $( docker images {{proj}}:latest -q )  {{proj}}:$(date +"%x-%H.%M")
     when: result.rc == 0
 
-  - name: Load {{project_name}} image
+  - name: Load {{proj}} image
     command: docker load -i /tmp/{{image}}
 
-  - name: Remove old instance {{project_name}}
-    shell: docker rm {{project_name}}.backup || true
+  - name: Remove old instance {{proj}}
+    shell: docker rm {{proj}}.backup || true
     when: result.rc == 0
 
-  - name: Stop old instance {{project_name}}
-    shell: docker stop {{project_name}}.prod || true
+  - name: Stop old instance {{proj}}
+    shell: docker stop {{proj}}.prod || true
 
   - name: Backup old instance
-    shell: docker rename {{project_name}}.prod {{project_name}}.backup || true
+    shell: docker rename {{proj}}.prod {{proj}}.backup || true
 
   - name: Create storage for static and content
     command: mkdir -p {{home}}/storage {{home}}/static
 
-  - name: Run new instance of {{project_name}}
+  - name: Run new instance of {{proj}}
     command: docker run -d -p 127.0.0.1:{{port}}:80 --link {{db}}:postgresql.docker \
              -v {{home}}/static:{{docker_home}}/static:Z \
-             --name {{project_name}}.prod {{project_name}}
+             --name {{proj}}.prod {{proj}}
 
-  - name: Show log instance of {{project_name}}
-    command: docker logs {{project_name}}.prod
+  - name: Configure httpd
+    template:
+      src: "config/http.conf.j2"
+      dest: "/etc/httpd/conf.d/{{ port }}-{{ proj }}.conf"
+    tags:
+      - httpd
+
+  - name: Show log instance of {{proj}}
+    command: docker logs {{proj}}.prod
     register: result
     tags:
         - log
