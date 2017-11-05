@@ -1,7 +1,15 @@
-# Neleň 2017 - Alphabet
+# Default Django project
 
-Animated alphabet for Neleň 2017
+Authors: Pavel Studeník
 
-Authors: Vít Zemčík, Misha Chmelíčková, Pavel Studeník
 
-Project is available on page http://demo2017.nelen.cz/
+Local build docker images:
+
+```
+docker build -t proj .
+```
+
+deploying by asnbile script to server
+```
+ansible-playbook -i config/hosts.ini deploy.yaml
+```
