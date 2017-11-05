@@ -19,6 +19,13 @@
   tasks:
   - name: Compile {{proj}} image
     command: docker build -t {{proj}} .
+
+  - name: Check {{project_name}}
+    command: git pull
+    delegate_to: localhost
+
+  - name: Compile {{proj}} image
+    command: docker build -t {{proj}} .
     delegate_to: localhost
     
   - name: Export image to file
