@@ -1,0 +1,74 @@
+---
+- hosts: all
+  remote_user: root
+  vars:
+    project_name: "proj"
+    user:         "proj"
+    port:         "8001"
+    db:           "postgresql"
+    home:         "/var/www/{{project_name}}"
+    docker_home:  "/data/proj"
+    # don't change
+    image:        "{{project_name}}.docker"
+
+  tasks:
+  - name: Compile {{project_name}} image
+    command: docker build -t {{project_name}} .
+    delegate_to: localhost
+    
+  - name: Export image to file
+    command: docker save -o {{image}} {{project_name}}
+    delegate_to: localhost
+
+  - copy: src={{image}} dest=/tmp/{{image}}
+
+  - name: Delete build image
+    file: path={{image}} state=absent
+    delegate_to: localhost
+
+  - name: Info about running docker instance
+    shell: docker inspect {{project_name}}:latest
+    register: result
+    ignore_errors: yes
+
+  - debug: 
+        var: result
+
+  - name: Rename old image by tag
+    shell:  docker tag $( docker images {{project_name}}:latest -q )  {{project_name}}:$(date +"%x-%H.%M")
+    when: result.rc == 0
+
+  - name: Load {{project_name}} image
+    command: docker load -i /tmp/{{image}}
+
+  - name: Remove old instance {{project_name}}
+    shell: docker rm {{project_name}}.backup || true
+    when: result.rc == 0
+
+  - name: Stop old instance {{project_name}}
+    shell: docker stop {{project_name}}.prod || true
+
+  - name: Backup old instance
+    shell: docker rename {{project_name}}.prod {{project_name}}.backup || true
+
+  - name: Create storage for static and content
+    command: mkdir -p {{home}}/storage {{home}}/static
+
+  - name: Run new instance of {{project_name}}
+    command: docker run -d -p 127.0.0.1:{{port}}:80 --link {{db}}:postgresql.docker \
+             -v {{home}}/static:{{docker_home}}/static:Z \
+             --name {{project_name}}.prod {{project_name}}
+
+  - name: Show log instance of {{project_name}}
+    command: docker logs {{project_name}}.prod
+    register: result
+    tags:
+        - log
+
+  - debug:
+       var: result.stderr_lines
+    tags:
+        - log
+
+  - name: Update owns
+    command: chown {{user}}. -R {{home}}

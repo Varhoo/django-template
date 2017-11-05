@@ -1,0 +1,24 @@
+/*
+ *   Project for Nelen 2017
+ *   author: Pavel Studenik <studenik@varhoo.cz>
+ *   Source:  https://github.com/Varhoo/nelen-alphabet
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #333;
+}
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+}
+body {
+  color: #333;
+  text-align: center;
+}

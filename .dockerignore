@@ -1,0 +1,18 @@
+# settings
+.git
+.idea
+.dockerignore
+*.retry
+Dockerfile
+.env/*
+
+# static files
+proj/storage
+proj/static/
+
+# databases
+*.db
+*.sql
+
+# editors
+*.swp

@@ -1,0 +1,17 @@
+# settings
+.git
+.idea
+*.retry
+.env/*
+*.py[co]
+
+# static files
+proj/storage
+proj/static/
+
+# databases
+*.db
+*.sql
+
+# editors
+*.swp
