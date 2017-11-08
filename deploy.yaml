@@ -27,12 +27,13 @@
   - name: Compile {{proj}} image
     command: docker build -t {{proj}} .
     delegate_to: localhost
-    
+
   - name: Export image to file
     command: docker save -o {{image}} {{proj}}
     delegate_to: localhost
 
-  - copy: src={{image}} dest=/tmp/{{image}}
+  - name: Copy image {{image}} to server
+    copy: src={{image}} dest=/tmp/{{image}}
 
   - name: Check docker and httpd on host
     command: systemctl status docker httpd
@@ -49,7 +50,7 @@
     register: result
     ignore_errors: yes
 
-  - debug: 
+  - debug:
         var: result
 
   - name: Rename old image by tag
@@ -86,7 +87,10 @@
       - httpd
 
   - name: Reload project on httpd
-    command: systemctl reload httpd
+    systemd: state=reloaded name=httpd
+
+    tags:
+      - restart
 
   - name: Show log instance of {{proj}}
     command: docker logs {{proj}}.prod
