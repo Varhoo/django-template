@@ -3,9 +3,9 @@
   remote_user: root
   vars:
     # project
-    domain:       "example.com"
+    domain:       "example.varhoo.cz"
     proj:         "proj"
-    port:         "8001"
+    port:         "8000"
     db:           "postgresql"
     # host
     user:         "{{ proj }}"
@@ -33,6 +33,12 @@
     delegate_to: localhost
 
   - copy: src={{image}} dest=/tmp/{{image}}
+
+  - name: Check docker and httpd on host
+    command: systemctl status docker httpd
+
+  - name: Check user {{ user }}
+    command: id {{ user }}
 
   - name: Delete build image
     file: path={{image}} state=absent
@@ -67,7 +73,8 @@
     command: mkdir -p {{home}}/storage {{home}}/static
 
   - name: Run new instance of {{proj}}
-    command: docker run -d -p 127.0.0.1:{{port}}:80 --link {{db}}:postgresql.docker \
+  # --link {{db}}:postgresql.docker \
+    command: docker run -d -p 127.0.0.1:{{port}}:80
              -v {{home}}/static:{{docker_home}}/static:Z \
              --name {{proj}}.prod {{proj}}
 
@@ -77,6 +84,9 @@
       dest: "/etc/httpd/conf.d/{{ port }}-{{ proj }}.conf"
     tags:
       - httpd
+
+  - name: Reload project on httpd
+    command: systemctl reload httpd
 
   - name: Show log instance of {{proj}}
     command: docker logs {{proj}}.prod
