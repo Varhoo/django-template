@@ -17,15 +17,12 @@
     image:        "{{proj}}.docker"
 
   tasks:
-  - name: Compile {{proj}} image
-    command: docker build -t {{proj}} .
-
-  - name: Check {{project_name}}
+  - name: Check {{ proj }}
     command: git pull
     delegate_to: localhost
 
-  - name: Compile {{proj}} image
-    command: docker build -t {{proj}} .
+  - name: Compile {{ proj }} image
+    command: docker build -t {{ proj }} .
     delegate_to: localhost
 
   - name: Export image to file
@@ -71,7 +68,12 @@
     shell: docker rename {{proj}}.prod {{proj}}.backup || true
 
   - name: Create storage for static and content
-    command: mkdir -p {{home}}/storage {{home}}/static
+    file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - "{{home}}/storage"
+      - "{{home}}/static"
 
   - name: Run new instance of {{proj}}
   # --link {{db}}:postgresql.docker \
