@@ -78,7 +78,8 @@
   - name: Run new instance of {{proj}}
   # --link {{db}}:postgresql.docker \
     command: docker run -d -p 127.0.0.1:{{port}}:80
-             -v {{home}}/static:{{docker_home}}/static:Z \
+             -v {{home}}/static:/data/static:Z \
+             -v {{home}}/storage:/data/storage:Z \
              --name {{proj}}.prod {{proj}}
 
   - name: Configure httpd
