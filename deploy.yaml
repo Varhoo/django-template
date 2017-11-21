@@ -5,7 +5,7 @@
     # project
     domain:       "example.varhoo.cz"
     proj:         "proj"
-    port:         "8000"
+    http_port:    "8000"
     db:           "postgresql"
     # host
     user:         "{{ proj }}"
@@ -75,17 +75,17 @@
       - "{{home}}/storage"
       - "{{home}}/static"
 
-  - name: Run new instance of {{proj}}
+  - name: Run new instance of {{ proj }}
   # --link {{db}}:postgresql.docker \
-    command: docker run -d -p 127.0.0.1:{{port}}:80
-             -v {{home}}/static:/data/static:Z \
-             -v {{home}}/storage:/data/storage:Z \
-             --name {{proj}}.prod {{proj}}
+    command: docker run -d -p 127.0.0.1:{{ http_port }}:80
+             -v {{ home }}/static:/data/static:Z \
+             -v {{ home }}/storage:/data/storage:Z \
+             --name {{ proj }}.prod {{ proj }}
 
   - name: Configure httpd
     template:
       src: "config/http.conf.j2"
-      dest: "/etc/httpd/conf.d/{{ port }}-{{ proj }}.conf"
+      dest: "/etc/httpd/conf.d/{{ http_port }}-{{ proj }}.conf"
     tags:
       - httpd
 
