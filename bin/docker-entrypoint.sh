@@ -18,4 +18,4 @@ python $HOME_PATH/manage.py migrate --noinput || exit
 python $HOME_PATH/manage.py collectstatic --noinput
 # python manage.py compilemessages
 
-uwsgi --http :80 --thunder-lock --enable-threads --master --wsgi-file $WSGI_FILE
+uwsgi --ini uwsgi.ini

@@ -8,7 +8,7 @@ ADD requirements.txt /data/app/requirements.txt
 
 RUN apk update && \
     apk add gcc zlib-dev libjpeg-turbo-dev python-dev musl-dev  \
-            linux-headers libffi-dev postgresql-dev gettext
+            linux-headers libffi-dev postgresql-dev gettext pcre pcre-dev
 RUN source /data/app/.env/bin/activate && pip install -r /data/app/requirements.txt && \
     rm -rf /root/.cache/ && apk del gcc python-dev linux-headers libffi-dev && \
     mkdir -p /data/{storage, static}
