@@ -77,7 +77,8 @@
 
   - name: Run new instance of {{ proj }}
   # --link {{db}}:postgresql.docker \
-    command: docker run -d -p 127.0.0.1:{{ http_port }}:80
+    command: docker run -d -p 127.0.0.1:{{ http_port }}:80 \
+             --restart=unless-stopped \
              -v {{ home }}/static:/data/static:Z \
              -v {{ home }}/storage:/data/storage:Z \
              --name {{ proj }}.prod {{ proj }}
