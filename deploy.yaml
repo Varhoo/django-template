@@ -3,109 +3,20 @@
   remote_user: root
   vars:
     # project
-    domain:       "example.varhoo.cz"
-    proj:         "proj"
-    http_port:    "8000"
-    db:           "postgresql"
-    # host
+    domain:    "example.varhoo.cz"
+    proj:      "proj"
+    http_port: "8000"
+    db:        "postgresql"
+    # email:    "root@localhost"
+
+    # configuration on host
     user:         "{{ proj }}"
-    email:         "root@localhost"
     home:         "/var/www/{{ proj }}"
-    # docker guest
+    # configuration  docker guest
     docker_home:  "/data/{{ proj }}"
     # don't change
     image:        "{{proj}}.docker"
 
-  tasks:
-  - name: Check {{ proj }}
-    command: git pull
-    delegate_to: localhost
-
-  - name: Compile {{ proj }} image
-    command: docker build -t {{ proj }} .
-    delegate_to: localhost
-
-  - name: Export image to file
-    command: docker save -o {{image}} {{proj}}
-    delegate_to: localhost
-
-  - name: Copy image {{image}} to server
-    copy: src={{image}} dest=/tmp/{{image}}
-
-  - name: Check docker and httpd on host
-    command: systemctl status docker httpd
-
-  - name: Check user {{ user }}
-    command: id {{ user }}
-
-  - name: Delete build image
-    file: path={{image}} state=absent
-    delegate_to: localhost
-
-  - name: Info about running docker instance
-    shell: docker inspect {{proj}}:latest
-    register: result
-    ignore_errors: yes
-
-  - debug:
-        var: result
-
-  - name: Rename old image by tag
-    shell:  docker tag $( docker images {{proj}}:latest -q )  {{proj}}:$(date +"%x-%H.%M")
-    when: result.rc == 0
-
-  - name: Load {{proj}} image
-    command: docker load -i /tmp/{{image}}
-
-  - name: Remove old instance {{proj}}
-    shell: docker rm {{proj}}.backup || true
-    when: result.rc == 0
-
-  - name: Stop old instance {{proj}}
-    shell: docker stop {{proj}}.prod || true
-
-  - name: Backup old instance
-    shell: docker rename {{proj}}.prod {{proj}}.backup || true
-
-  - name: Create storage for static and content
-    file:
-      path: "{{ item }}"
-      state: directory
-    with_items:
-      - "{{home}}/storage"
-      - "{{home}}/static"
-
-  - name: Run new instance of {{ proj }}
-  # --link {{db}}:postgresql.docker \
-    command: docker run -d -p 127.0.0.1:{{ http_port }}:80 \
-             --restart=unless-stopped \
-             -v {{ home }}/static:/data/static:Z \
-             -v {{ home }}/storage:/data/storage:Z \
-             --name {{ proj }}.prod {{ proj }}
-
-  - name: Configure httpd
-    template:
-      src: "config/http.conf.j2"
-      dest: "/etc/httpd/conf.d/{{ http_port }}-{{ proj }}.conf"
-    tags:
-      - httpd
-
-  - name: Reload project on httpd
-    systemd: state=reloaded name=httpd
-
-    tags:
-      - restart
-
-  - name: Show log instance of {{proj}}
-    command: docker logs {{proj}}.prod
-    register: result
-    tags:
-        - log
-
-  - debug:
-       var: result.stderr_lines
-    tags:
-        - log
-
-  - name: Update owns
-    command: chown {{user}}. -R {{home}}
+  roles:
+    - common
+    - webservice

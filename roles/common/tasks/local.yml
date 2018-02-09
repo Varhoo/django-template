@@ -1,0 +1,11 @@
+- name: Check {{ proj }}
+  command: git pull
+  delegate_to: localhost
+
+- name: Compile {{ proj }} image
+  command: docker build -t {{ proj }} .
+  delegate_to: localhost
+
+- name: Export image to file
+  command: docker save -o {{image}} {{proj}}
+  delegate_to: localhost

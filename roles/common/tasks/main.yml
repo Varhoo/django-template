@@ -1,0 +1,56 @@
+---
+- import_tasks: local.yml
+
+- name: Copy image {{image}} to server
+  copy: src={{image}} dest=/tmp/{{image}}
+
+- name: Check docker and httpd on host
+  command: systemctl status docker httpd
+
+- name: Check user {{ user }}
+  command: id {{ user }}
+
+- name: Delete build image
+  file: path={{image}} state=absent
+  delegate_to: localhost
+
+- name: Info about running docker instance
+  shell: docker inspect {{proj}}:latest
+  register: result
+  ignore_errors: yes
+
+- debug:
+      var: result
+
+- name: Rename old image by tag
+  shell:  docker tag $( docker images {{proj}}:latest -q )  {{proj}}:$(date +"%x-%H.%M")
+  when: result.rc == 0
+
+- name: Load {{proj}} image
+  command: docker load -i /tmp/{{image}}
+
+- name: Remove old instance {{proj}}
+  shell: docker rm {{proj}}.backup || true
+  when: result.rc == 0
+
+- name: Stop old instance {{proj}}
+  shell: docker stop {{proj}}.prod || true
+
+- name: Backup old instance
+  shell: docker rename {{proj}}.prod {{proj}}.backup || true
+
+- name: Create storage for static and content
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{home}}/storage"
+    - "{{home}}/static"
+
+- name: Run new instance of {{ proj }}
+# --link {{db}}:postgresql.docker \
+  command: docker run -d -p 127.0.0.1:{{ http_port }}:80 \
+           --restart=unless-stopped \
+           -v {{ home }}/static:/data/static:Z \
+           -v {{ home }}/storage:/data/storage:Z \
+           --name {{ proj }}.prod {{ proj }}

@@ -1,0 +1,24 @@
+---
+- name: Configure httpd
+  template:
+    src: "http.conf.j2"
+    dest: "/etc/httpd/conf.d/{{ http_port }}-{{ proj }}.conf"
+  tags:
+    - httpd
+
+- name: Reload project on httpd
+  systemd: state=reloaded name=httpd
+
+  tags:
+    - restart
+
+- name: Show log instance of {{proj}}
+  command: docker logs {{proj}}.prod
+  register: result
+  tags:
+      - log
+
+- debug:
+     var: result.stderr_lines
+  tags:
+      - log
