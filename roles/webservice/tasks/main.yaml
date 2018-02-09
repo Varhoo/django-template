@@ -18,7 +18,6 @@
   tags:
       - log
 
-- debug:
-     var: result.stderr_lines
+- debug: var=result.stderr_lines
   tags:
       - log

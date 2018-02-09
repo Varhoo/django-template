@@ -1,14 +1,14 @@
 ---
 - import_tasks: local.yml
 
-- name: Copy image {{image}} to server
-  copy: src={{image}} dest=/tmp/{{image}}
-
 - name: Check docker and httpd on host
   command: systemctl status docker httpd
 
 - name: Check user {{ user }}
   command: id {{ user }}
+
+- name: Copy image {{image}} to server
+  copy: src={{image}} dest=/tmp/{{image}}
 
 - name: Delete build image
   file: path={{image}} state=absent
@@ -19,11 +19,10 @@
   register: result
   ignore_errors: yes
 
-- debug:
-      var: result
+- debug: var=result.stdout_lines
 
 - name: Rename old image by tag
-  shell:  docker tag $( docker images {{proj}}:latest -q )  {{proj}}:$(date +"%x-%H.%M")
+  command: docker tag "{{proj}}:latest" "{{proj}}:{{timestamp.stdout}}"
   when: result.rc == 0
 
 - name: Load {{proj}} image
@@ -54,3 +53,9 @@
            -v {{ home }}/static:/data/static:Z \
            -v {{ home }}/storage:/data/storage:Z \
            --name {{ proj }}.prod {{ proj }}
+
+- name: Show all {{ proj }} imags
+  command: docker images {{ proj }}
+  register: images
+
+- debug: var=images.stdout_lines
