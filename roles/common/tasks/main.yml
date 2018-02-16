@@ -50,8 +50,8 @@
 # --link {{db}}:postgresql.docker \
   command: docker run -d -p 127.0.0.1:{{ http_port }}:80 \
            --restart=unless-stopped \
-           -v {{ home }}/static:/data/static:Z \
-           -v {{ home }}/storage:/data/storage:Z \
+           -v {{ home }}/static:{{ docker_home }}/static:Z \
+           -v {{ home }}/storage:{{ docker_home }}/storage:Z \
            --name {{ proj }}.prod {{ proj }}
 
 - name: Show all {{ proj }} imags

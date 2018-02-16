@@ -20,5 +20,11 @@ body {
 }
 body {
   color: #333;
-  text-align: center;
+  margin: 20px;
+}
+
+.container {
+  width: auto;
+  max-width: 800px;
+  padding: 0 15px;
 }
