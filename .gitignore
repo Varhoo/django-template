@@ -12,6 +12,7 @@ proj/static/
 # databases
 *.db
 *.sql
+*.sqlite3
 
 # editors
 *.swp
