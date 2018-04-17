@@ -4,7 +4,11 @@
 .dockerignore
 *.retry
 Dockerfile
+
+# virtualenv
 .env/*
+venv
+.venv
 
 # static files
 proj/storage
