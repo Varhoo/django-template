@@ -9,14 +9,11 @@
     - build
 
 - name: Compile {{ proj }} image
-  docker_image:
-    path: ./
-    name: "{{ proj }}"
-    state: present
+  command: docker build . -t {{ proj }}
   delegate_to: localhost
   tags:
     - build
 
 - name: Export image to file
-  command: docker save -o {{image}} {{proj}}
+  command: docker save -o {{ image }} {{ proj }}
   delegate_to: localhost
