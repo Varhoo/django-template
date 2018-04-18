@@ -1,0 +1,26 @@
+stages:
+  - build
+  - test
+
+variables:
+  IMAGE_COMMIT: $CI_PROJECT_NAME:$CI_COMMIT_SHA
+  IMAGE_BRANCH: $CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG
+  IMAGE_LATEST: $CI_PROJECT_NAME:latest
+
+image: docker:17.06
+
+static-analysis:
+  stage: build
+  image: coala/base:0.11
+  script:
+    - coala --non-interactive
+
+build:
+  stage: build
+  script:
+    - docker build -t $IMAGE_COMMIT .
+
+pylint:
+  stage: test
+  script:
+    - docker run $IMAGE_COMMIT pylint apps test
