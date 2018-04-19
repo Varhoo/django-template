@@ -4,7 +4,8 @@ Author: Pavel Studeník
 
 Template for deploying Django project in Docker image by Ansible script to production.
 
-Project is only tempalate for project. But it is possible to build and run it as default. For local build of docker image you can use command:
+Project is only tempalate for project. But it is possible to build and run it as default.
+For local build of docker image you can use command:
 
 ```
 docker build -t proj .
