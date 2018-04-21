@@ -4,7 +4,7 @@ Author: Pavel Studeník
 
 Template for deploying Django project in Docker image by Ansible script to production.
 
-Project is only tempalate for project. But it is possible to build and run it as default.
+Project is only template for project. But it is possible to build and run it as default.
 For local build of docker image you can use command:
 
 ```
@@ -15,4 +15,11 @@ For deploying on production it is used Ansible script. The file config/hosts.ini
 
 ```
 ansible-playbook -i config/hosts.ini deploy.yaml
+```
+
+
+Test:
+
+```
+docker run -it -v=$(pwd):/app -v=/tmp/coala:/cache --workdir=/app coala/base coala -n
 ```

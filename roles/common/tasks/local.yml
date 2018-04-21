@@ -9,7 +9,7 @@
     - build
 
 - name: Compile {{ proj }} image
-  command: docker build . -t {{ proj }}
+  command: docker build . -t {{ proj }} --no-cache
   delegate_to: localhost
   tags:
     - build
