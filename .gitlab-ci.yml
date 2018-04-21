@@ -20,7 +20,9 @@ build:
   script:
     - docker build -t $IMAGE_COMMIT .
 
-pylint:
+test:
   stage: test
+  image: $CI_PROJECT_NAME:latest
   script:
-    - docker run $IMAGE_COMMIT pylint apps test
+    - pylint apps test
+    - python manage test
