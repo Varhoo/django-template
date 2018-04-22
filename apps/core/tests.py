@@ -3,4 +3,15 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 
-# Create your tests here.
+from django.test import TestCase
+from django.test import Client
+
+
+class GiverTestCase(TestCase):
+
+    def setUp(self):
+        self.cli = Client()
+
+    def test_homepage(self):
+        response = self.cli.get("/")
+        self.assertEqual(200, response.status_code)

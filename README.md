@@ -17,7 +17,6 @@ For deploying on production it is used Ansible script. The file config/hosts.ini
 ansible-playbook -i config/hosts.ini deploy.yaml
 ```
 
-
 Test:
 
 ```
