@@ -13,7 +13,7 @@
     user:         "{{ proj }}"
     home:         "/var/www/{{ proj }}"
     # configuration  docker guest
-    docker_home:  "/data/{{ proj }}"
+    docker_home:  "/app/{{ proj }}"
     # don't change
     image:        "{{proj}}.docker"
 
