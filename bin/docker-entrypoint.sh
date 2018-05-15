@@ -6,7 +6,7 @@ HOME_PATH="/app"
 
 mkdir -p /app/log/
 PRODUCTION=$( find $HOME_PATH -name production.py | grep "settings/production.py" )
-WSGI_FILE=$( find $HOME_PATH -name wsgi.py )
+
 export DJANGO_SETTINGS_MODULE="$PROJ.settings"
 if [ ! -z $PRODUCTION ]; then
     export DJANGO_SETTINGS_MODULE="$PROJ.settings.production"
