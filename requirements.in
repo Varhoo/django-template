@@ -1,4 +1,4 @@
 Django < 2
 uwsgi
 djangorestframework
-psycopg2
+psycopg2-binary
