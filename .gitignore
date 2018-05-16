@@ -3,7 +3,15 @@
 .idea
 *.retry
 .env/*
+
+# compile python
 *.py[co]
+
+#virtualenv
+.venv
+venv
+.env
+env
 
 # static files
 proj/storage

@@ -1,14 +1,18 @@
 # settings
 .git
 .idea
-.dockerignore
 *.retry
+.dockerignore
 Dockerfile
 
+# compile python
+*.py[co]
+
 # virtualenv
-.env/*
-venv
 .venv
+venv
+.env
+env
 
 # static files
 proj/storage
