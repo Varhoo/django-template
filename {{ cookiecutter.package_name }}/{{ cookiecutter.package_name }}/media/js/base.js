@@ -1,7 +1,7 @@
 /*
- *   Project for Nelen 2017
+ *   Project Django template for Varhoo projects
  *   author: Pavel Studenik <studenik@varhoo.cz>
- *   Source:  https://github.com/Varhoo/nelen-alphabet
+ *   Source:  https://github.com/Varhoo/django-template
  */
 
 

@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'proj.urls'
+ROOT_URLCONF = '{{ cookiecutter.package_name }}.urls'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -66,7 +66,7 @@ TEMPLATES = [{
     },
 }, ]
 
-WSGI_APPLICATION = 'proj.wsgi.application'
+WSGI_APPLICATION = '{{ cookiecutter.package_name }}.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

@@ -2,13 +2,8 @@
 .git
 .idea
 *.retry
+.env/*
 *.py[co]
-
-#virtualenv
-.venv
-venv
-.env
-env
 
 # static files
 proj/storage

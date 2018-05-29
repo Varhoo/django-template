@@ -3,8 +3,8 @@
   remote_user: root
   vars:
     # project
-    domain:    "example.varhoo.cz"
-    proj:      "proj"
+    domain:    "{{ cookiecutter.package_name }}.varhoo.cz"
+    proj:      "{{ cookiecutter.package_name }}"
     http_port: "8000"
     db:        "postgresql"
     # email:    "root@localhost"

@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-django==1.11.12
+django==1.11.13
 djangorestframework==3.8.2
 psycopg2-binary==2.7.4
 pytz==2018.4              # via django
