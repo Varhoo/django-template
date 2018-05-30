@@ -3,6 +3,6 @@
     "author_email": "info@varhoo.cz",
     "repo_group": "{{ cookiecutter.author }}",
     "repo_name": "proj",
-    "package_name": "{{ cookiecutter.repo_name | replace('-', '_') }}",
+    "package_name": "{{ cookiecutter.repo_name | replace('-', '_') }}"
 }
 
