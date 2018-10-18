@@ -1,6 +1,6 @@
-[Default]
+[all]
 files = **.(py|md|rst|yml), tox.ini, .coafile
-ignore = (.tox|env|.env|venv)/**, docs/conf.py, **/migrations/*, manage.py
+ignore = (.tox|env|.env|venv|.idea)/**, **/migrations/*.py
 
 indent_size = 4
 use_spaces = True
@@ -13,26 +13,33 @@ dedent_closing_brackets = yes
 coalesce_brackets = yes
 blank_line_before_nested_class_or_def = yes
 
-[filenames]
+[all.filenames]
 bears = FilenameBear
 
-[long-files]
+[all.long-files]
 bears = LineCountBear
 
-[spacing]
+[all.spacing]
 ignore = (.tox|env|.env|venv)/**, **.yml, tox.ini, .coafile
 bears = SpaceConsistencyBear
 
-[config-spacing]
+[all.config.spacing]
 files = **.yml, tox.ini, .coafile
 bears = SpaceConsistencyBear
 indent_size = 2
 
-[python-spacing]  # Own section needed, otherwise conflicts occur
+[all.python.imports]
+bears = PyImportSortBear
+force_single_line_imports = no
+known_first_party_imports = test
+isort_multi_line_output = 5  # 5 means 'Hanging Grid Grouped'
+default_import_section = THIRDPARTY
+
+[all.python.spacing]  # Own section needed, otherwise conflicts occur
 files = **.py
 bears = YapfBear
 
-[python-docs]
+[all.python.docs]
 files = **.py
 bears = PyDocStyleBear
 pydocstyle_ignore =
@@ -40,35 +47,35 @@ pydocstyle_ignore =
   D203,  # 1 blank line required before class docstring
   D213,  # Multi-line docstring summary should start at the second line
 
-[python-semantic]
+[all.python.semantic]
 files = **.py
 bears = RadonBear, PyUnusedCodeBear
 language = python
 
-[yaml]
+[all.yaml]
 files = **.(yml|yaml)
 bears = YAMLLintBear
 yamllint_config = .yamllint
 
-[markdown]
+[all.markdown]
 files = **.md
 bears = MarkdownBear
 
-[long-lines]  # After YapfBear as it might be able to autofix some of those occurrences
+[all.long-lines]  # After YapfBear as it might be able to autofix some of those occurrences
 bears = LineLengthBear
 
-[commit]
+[all.commit]
 bears = GitCommitBear
 shortlog_length = 72
 ignore_length_regex = https?://
 
-[keywords]
+[all.keywords]
 files = **.py
 bears = KeywordBear
 language = python
 keywords = TODO, FIXME, pdb.set_trace()  # Ignore KeywordBear
 
-[links]
+[all.links]
 bears = InvalidLinkBear
 # We ignore:
 # - example.com (coala default)

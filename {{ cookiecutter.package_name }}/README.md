@@ -20,5 +20,5 @@ ansible-playbook -i config/hosts.ini deploy.yaml
 Test:
 
 ```
-docker run -it -v=$(pwd):/app -v=/tmp/coala:/cache --workdir=/app coala/base coala -n
+docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -n
 ```

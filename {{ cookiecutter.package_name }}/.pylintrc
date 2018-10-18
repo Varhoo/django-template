@@ -5,14 +5,11 @@ jobs=0
 [MESSAGES CONTROL]
 disable =
   missing-docstring,
-  line-too-long,
   invalid-name,
   no-value-for-parameter,
   no-member,
   unused-argument,
   broad-except,
-  relative-import,
-  wrong-import-position,
   bare-except,
   locally-disabled,
   protected-access,
