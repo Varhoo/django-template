@@ -12,9 +12,8 @@ if [ ! -z $PRODUCTION ]; then
     export DJANGO_SETTINGS_MODULE="$PROJ.settings.production"
 fi
 
-# python /data/manage.py migrate --fake-initial --noinput || exit
+# python $HOME_PATH/manage.py migrate --fake-initial --noinput || exit
 python $HOME_PATH/manage.py migrate --noinput || exit
 python $HOME_PATH/manage.py collectstatic --noinput
-# python manage.py compilemessages
 
 uwsgi --ini uwsgi.ini

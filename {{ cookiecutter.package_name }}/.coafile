@@ -81,5 +81,4 @@ bears = InvalidLinkBear
 # - example.com (coala default)
 # - {}-style formatting (coala default)
 # - %s-style formatting
-# - gitlab.skypicker.com since it requires auth
-link_ignore_regex = ([./]example.com|{|%(?:\(\w+?\))?s|gitlab\.skypicker\.com)
+link_ignore_regex = ([./]example.com|{|%(?:\(\w+?\))?s|gitlab\.com|github\.com)
