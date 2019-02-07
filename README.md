@@ -17,10 +17,17 @@ For deploying on production it is used Ansible script. The file config/hosts.ini
 ansible-playbook -i config/hosts.ini deploy.yaml
 ```
 
+# Using
+
+Create new project with default configuration:
+
+```
+cookiecutter https://github.com/Varhoo/django-template
+```
 
 # Testing
 
-```
+
 ```
 docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -n
 ```
