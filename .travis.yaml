@@ -1,0 +1,4 @@
+language: python
+install:
+  - pip install cookiecutter
+script:  cookiecutter --default-config .
