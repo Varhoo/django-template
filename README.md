@@ -2,7 +2,7 @@
 
 Author: Pavel Studeník
 
-Template for deploying Django project in Docker image by Ansible script to production.
+Cookiecutter template for deploying Django project in Docker image by Ansible script to production.
 
 Project is only template for project. But it is possible to build and run it as default.
 For local build of docker image you can use command:
@@ -22,6 +22,7 @@ ansible-playbook -i config/hosts.ini deploy.yaml
 Create new project with default configuration:
 
 ```
+pip install cookiecutter
 cookiecutter https://github.com/Varhoo/django-template
 ```
 
