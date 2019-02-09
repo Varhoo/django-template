@@ -18,14 +18,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)) + "/../")
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '<generatekey>'
+SECRET_KEY = '<cookiecutter.hooks.generate_key>'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", ]
+ALLOWED_HOSTS = ['*']
 
-ADMIN = ["", ]
+ADMIAN = ['{{ cookiecutter.author_email }}']
 
 # Application definition
 
@@ -54,7 +54,7 @@ ROOT_URLCONF = '{{ cookiecutter.package_name }}.urls'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [os.path.join(BASE_DIR, "templates"), ],
+    'DIRS': [os.path.join(BASE_DIR, 'templates')],
     'APP_DIRS': True,
     'OPTIONS': {
         'context_processors': [
@@ -117,4 +117,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/storage/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "storage")
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "media"), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "media")]

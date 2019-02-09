@@ -1,1 +1,1 @@
-from {{ cookiecutter.package_name }}.settings.basic import *
+from .basic import *

@@ -16,3 +16,6 @@ proj/static/
 
 # editors
 *.swp
+
+# docker export
+*.docker

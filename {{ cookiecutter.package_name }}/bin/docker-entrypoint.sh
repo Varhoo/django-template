@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-PROJ="proj"
+PROJ="{{ cookiecutter.package_name }}"
 HOME_PATH="/app"
 # docker run -d --name "postgresql" -h "postgresql" -p 5432:5432 -e POSTGRES_PASSWORD=<passwd> -v /var/lib/postgresql/data:/var/lib/postgresql/data:Z postgres
 
