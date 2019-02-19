@@ -24,6 +24,7 @@
 	ProxyErrorOverride Off
 	ProxyPass /storage !
 	ProxyPass /static !
+	SetEnv proxy-initial-not-pooled 1
 	ProxyPass / http://127.0.0.1:{{ http_port }}/
 	ProxyPassReverse / http://127.0.0.1:{{ http_port }}/
 </VirtualHost>
