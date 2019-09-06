@@ -54,6 +54,9 @@
            -v {{ home }}/storage:{{ docker_home }}/storage:Z \
            --name {{ proj }}.prod {{ proj }}
 
+- name: remove docker {{proj}} image
+  command: rm /tmp/{{image}}
+
 - name: Show all {{ proj }} imags
   command: docker images {{ proj }}
   register: images
