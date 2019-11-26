@@ -75,10 +75,7 @@ bears = KeywordBear
 language = python
 keywords = TODO, FIXME, pdb.set_trace()  # Ignore KeywordBear
 
-[all.links]
-bears = InvalidLinkBear
-# We ignore:
-# - example.com (coala default)
-# - {}-style formatting (coala default)
-# - %s-style formatting
-link_ignore_regex = ([./]example.com|{|%(?:\(\w+?\))?s|gitlab\.com|github\.com)
+[all.jinja]
+files = */templates/**.html
+bears = Jinja2Bear
+check_end_labels = False
