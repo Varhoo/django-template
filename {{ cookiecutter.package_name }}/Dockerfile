@@ -1,4 +1,4 @@
-FROM python:2-alpine
+FROM python:3-alpine
 
 ADD requirements.txt /app/requirements.txt
 
