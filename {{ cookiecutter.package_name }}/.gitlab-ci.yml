@@ -22,7 +22,8 @@ build:
 
 test:
   stage: test
-  image: $CI_PROJECT_NAME:latest
+  image: $IMAGE_COMMIT
   script:
+    - pip install pylint
     - pylint apps test
     - python manage test
