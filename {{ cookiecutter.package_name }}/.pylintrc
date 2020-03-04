@@ -1,6 +1,7 @@
 [MASTER]
 # jobs=0 means 'use all CPUs'
 jobs=0
+ignore=migrations
 
 [MESSAGES CONTROL]
 disable =
