@@ -15,8 +15,8 @@ venv
 env
 
 # static files
-proj/storage
-proj/static/
+{{ cookiecutter.package_name }}/storage
+{{ cookiecutter.package_name }}/static/
 
 # databases
 *.db
