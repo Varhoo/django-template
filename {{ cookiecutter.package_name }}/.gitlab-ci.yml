@@ -32,4 +32,4 @@ pylint:
   stage: test
   image: $IMAGE_COMMIT
   script:
-    - pip install pylint && pylint apps
+    - pip install pylint && pylint apps {{ cookiecutter.package_name }}
