@@ -27,8 +27,15 @@ cookiecutter https://github.com/Varhoo/django-template
 ```
 
 # Testing
+Easiest way to check code is using defined makefiles with bash scripts.
 
 
 ```
-docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -n
+make check
+```
+
+Or execute separated command.
+
+```
+docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -an
 ```
