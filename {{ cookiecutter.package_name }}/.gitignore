@@ -3,11 +3,12 @@
 .idea
 *.retry
 .env/*
+venv/*
 *.py[co]
 
 # static files
-proj/storage
-proj/static/
+{{ cookiecutter.author_email }}/storage
+{{ cookiecutter.author_email }}/static/
 
 # databases
 *.db

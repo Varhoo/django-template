@@ -25,5 +25,11 @@ test:
   image: $IMAGE_COMMIT
   script:
     - pip install pylint
-    - pylint apps test
+    - pylint apps
     - python manage test
+
+pylint:
+  stage: test
+  image: $IMAGE_COMMIT
+  script:
+    - pip install pylint && pylint apps {{ cookiecutter.package_name }}
