@@ -24,9 +24,7 @@ test:
   stage: test
   image: $IMAGE_COMMIT
   script:
-    - pip install pylint
-    - pylint apps
-    - python manage test
+    - python manage.py test
 
 pylint:
   stage: test
