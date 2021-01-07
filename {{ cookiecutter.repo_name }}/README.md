@@ -11,7 +11,8 @@ For local build of docker image you can use command:
 docker build -t proj .
 ```
 
-For deploying on production it is used Ansible script. The file config/hosts.ini contains hostname of target server.
+For deploying on production it is used Ansible script. The file config/hosts.ini 
+contains hostname of target server.
 
 ```
 ansible-playbook -i config/hosts.ini deploy.yaml
