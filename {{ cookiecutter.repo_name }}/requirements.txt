@@ -16,7 +16,7 @@ psycopg2-binary==2.8.6
     # via -r requirements.in
 pytz==2021.1
     # via django
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via django
 uwsgi==2.0.19.1
     # via -r requirements.in
