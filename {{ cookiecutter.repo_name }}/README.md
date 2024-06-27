@@ -2,26 +2,25 @@
 
 Author: Pavel Studeník
 
-Template for deploying Django project in Docker image by Ansible script to production.
+A Cookiecutter template for deploying a Django project in a Docker image using an Ansible script for production.
 
-Project is only template for project. But it is possible to build and run it as default.
-For local build of docker image you can use command:
+The project serves as a template, but it can be built and run with default settings. 
+To build the Docker image locally, you can use the following command:
 
 ```
 docker build -t proj .
 ```
 
-For deploying on production it is used Ansible script. The file config/hosts.ini 
-contains hostname of target server.
+For deploying in production, an Ansible script is used. The file config/hosts.ini contains the hostname of the target server.
 
 ```
-ansible-playbook -i config/hosts.ini deploy.yaml
+ansible-playbook -i config/hosts.ini release.yaml
 ```
 
 # Create Database:
 
 ```
-docker run -e POSTGRES_PASSWORD={{ password }} --name postgresql \
+docker run -e POSTGRES_PASSWORD={{ password }} --name postgresql.prod \
            -v /var/lib/postgresql/data:/var/lib/postgresql/data \
            -it -p 127.0.0.1:5432:5432 postgres
 ```
@@ -37,11 +36,11 @@ GRANT ALL PRIVILEGES ON DATABASE {{ db }} to {{ user }};
 # Test:
 
 ```
-docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -n
+docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -an
 ```
 
 Test with Selinux:
 
 ```
-docker run -ti --rm -v $(pwd):/app:Z -w /app coala/base:0.11 coala -n
+docker run -ti --rm -v $(pwd):/app:Z -w /app coala/base:0.11 coala -an
 ```

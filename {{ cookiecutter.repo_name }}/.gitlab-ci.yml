@@ -3,9 +3,9 @@ stages:
   - test
 
 variables:
-  IMAGE_COMMIT: $CI_PROJECT_NAME:$CI_COMMIT_SHA
-  IMAGE_BRANCH: $CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG
-  IMAGE_LATEST: $CI_PROJECT_NAME:latest
+  IMAGE_COMMIT: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHA
+  IMAGE_BRANCH: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
+  IMAGE_LATEST: $CI_REGISTRY/$CI_PROJECT_PATH:latest
 
 image: docker:17.06
 
@@ -31,3 +31,10 @@ pylint:
   image: $IMAGE_COMMIT
   script:
     - pip install pylint && pylint apps {{ cookiecutter.package_name }}
+
+push:
+  stage: deploy
+  script:
+    - docker tag $IMAGE_COMMIT $IMAGE_LATEST
+    - docker push $IMAGE_LATEST
+  when: manual

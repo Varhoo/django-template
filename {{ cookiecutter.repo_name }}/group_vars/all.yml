@@ -1,0 +1,18 @@
+---
+# project
+domain:    "example.com"
+proj:      "{{ proj }}"
+registry:  "{{registry}}/{{proj}}"
+registry_version:  "latest"
+
+http_port: "9000"
+db:        "postgresql.prod"
+email:     "root@localhost"
+
+# configuration on host
+user:         "username"
+home:         "/var/www/{{ proj }}"
+# configuration  docker guest
+docker_home:  "/app/{{ proj }}"
+# don't change
+image:        "{{proj}}.docker"

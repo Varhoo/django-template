@@ -1,0 +1,57 @@
+---
+- name: Check docker and apache2 on host
+  command: systemctl status docker apache2
+
+- name: Check user {{ user }}
+  command: id {{ user }}
+
+- command: date +"%Y.%m.%d-%H.%M"
+  delegate_to: localhost
+  register: timestamp
+
+- name: Rename old image by tag
+  command: docker tag "{{registry}}:{{ registry_version }}" "{{registry}}:{{timestamp.stdout}}"
+  ignore_errors: yes
+
+- name: Pull image {{registry}}:latest"
+  shell: docker pull "{{registry}}:latest"
+  register: result
+
+- name: Remove old instance {{proj}}
+  shell: docker rm {{proj}}.backup || true
+
+- name: Create storage for static and content
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{home}}/storage"
+    - "{{home}}/static"
+
+- name: Stop old instance {{proj}}
+  shell: docker stop {{proj}}.prod || true
+
+- name: Backup old instance
+  shell: docker rename {{proj}}.prod {{proj}}.backup || true
+
+
+- name: Run new prod instance of {{ proj }}
+  command: docker run -d -p 127.0.0.1:{{ http_port }}:80 \
+           -e DJANGO_SETTINGS_MODULE="{{ proj }}.settings.production"
+           --restart=unless-stopped \
+           --link {{db}}:postgresql.docker \
+           --security-opt="label=disable" \
+           -v {{ home }}/static:{{ docker_home }}/static:Z \
+           -v {{ home }}/storage:{{ docker_home }}/storage:Z \
+           --name {{ proj }}.prod "{{ registry }}:{{ registry_version }}"
+  tags:
+    - deploy
+
+- name: Show all {{ registry }} images
+  command: docker images {{ registry }}
+  register: images
+
+- name: Clean all images
+  command: docker images {{ registry }}:{{ registry_version }}
+
+- debug: var=images.stdout_lines
