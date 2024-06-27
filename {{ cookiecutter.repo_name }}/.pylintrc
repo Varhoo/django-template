@@ -6,6 +6,7 @@ ignore=migrations
 [MESSAGES CONTROL]
 disable =
   missing-docstring,
+  line-too-long,
   invalid-name,
   no-value-for-parameter,
   no-member,
@@ -15,12 +16,14 @@ disable =
   locally-disabled,
   protected-access,
   abstract-method,
-  no-self-use,
   fixme,
   too-few-public-methods,
   super-init-not-called,
   too-many-ancestors,
   redefined-outer-name,
+  invalid-str-returned,
+  super-with-arguments,
+  consider-using-f-string
 
 [REPORTS]
 output-format=colorized
