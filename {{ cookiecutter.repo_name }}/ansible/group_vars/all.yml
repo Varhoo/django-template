@@ -2,7 +2,7 @@
 # project
 domain:    "example.com"
 proj:      "{{ proj }}"
-registry:  "{{registry}}/{{proj}}"
+registry:  "{{registry}}/{{ proj }}"
 registry_version:  "latest"
 
 http_port: "9000"
