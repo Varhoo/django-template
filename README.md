@@ -14,7 +14,7 @@ docker build -t proj .
 For deploying in production, an Ansible script is used. The file config/hosts.ini contains the hostname of the target server.
 
 ```
-ansible-playbook -i config/hosts.ini release.yaml
+ansible-playbook -i config/hosts.ini ansible/release.yaml
 ```
 
 # Using

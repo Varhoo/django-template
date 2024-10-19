@@ -6,7 +6,7 @@
     "package_name": "{{ cookiecutter.repo_name | replace('-', '_') }}",
     "_copy_without_render": [
         "*.html",
-        "roles/*",
+	"ansible/*",
         "apps/*",
         ".coafile",
         "README.md"
