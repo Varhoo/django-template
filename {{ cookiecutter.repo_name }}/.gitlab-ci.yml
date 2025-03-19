@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 variables:
   IMAGE_COMMIT: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHA
