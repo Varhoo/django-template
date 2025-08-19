@@ -31,7 +31,7 @@ indent_size = 2
 [all.python.imports]
 bears = PyImportSortBear
 force_single_line_imports = no
-known_first_party_imports = test
+known_first_party_imports = test, apps
 isort_multi_line_output = 5  # 5 means 'Hanging Grid Grouped'
 default_import_section = THIRDPARTY
 
