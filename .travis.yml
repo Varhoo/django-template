@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.9"
+  - "3.10"
+  - "3.11"
+install:
+  - pip install --upgrade pip
+  - pip install cookiecutter
+script:
+  - cookiecutter --default-config --no-input .
+  # Default cookiecutter.json values: repo_name=my-proj, package_name=my_proj
+  - test -f my-proj/my_proj/settings/basic.py
+  - "! grep -F '<cookiecutter.hooks.generate_key>' my-proj/my_proj/settings/basic.py"
+  - "! grep -F '{{ cookiecutter' my-proj/README.md"
+  - grep -q "SECRET_KEY = '" my-proj/my_proj/settings/basic.py
