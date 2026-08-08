@@ -2,8 +2,9 @@
 all: locale
 
 check:
-	docker run -ti --rm -v '${CURDIR}:/app:Z' -w /app coala/base:0.11 coala -an || true
-	pylint {{ cookiecutter.package_name }}
+	black --line-length 120 --check apps/ {{ cookiecutter.package_name }}/ bin/
+	isort --check-only --diff apps/ {{ cookiecutter.package_name }}/ bin/
+	pylint -rn -sn --disable=import-error apps {{ cookiecutter.package_name }}
 	pip-compile requirements.in -o requirements.txt
 
 upgrade:

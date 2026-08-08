@@ -36,11 +36,15 @@ GRANT ALL PRIVILEGES ON DATABASE {{ db }} to {{ user }};
 # Test:
 
 ```
-docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -an
+make check
 ```
 
-Test with Selinux:
+Or run the tools directly:
 
 ```
-docker run -ti --rm -v $(pwd):/app:Z -w /app coala/base:0.11 coala -an
+black --line-length 120 --check apps/ <package>/ bin/
+isort --check-only --diff apps/ <package>/ bin/
+pylint -rn -sn --disable=import-error apps <package>
 ```
+
+Pre-commit hooks (black, isort, pylint) are configured in `.pre-commit-config.yaml`.

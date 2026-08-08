@@ -27,15 +27,20 @@ cookiecutter https://github.com/Varhoo/django-template
 ```
 
 # Testing
-The easiest way to check code is by using predefined makefiles with bash scripts.
+
+The easiest way to check code is with the project Makefile:
 
 ```
 make check
 ```
 
-Or execute separated command.
+Or run the tools directly (from a generated project):
 
 ```
-docker run -ti --rm -v $(pwd):/app -w /app coala/base:0.11 coala -an
+black --line-length 120 --check apps/ <package>/ bin/
+isort --check-only --diff apps/ <package>/ bin/
+pylint -rn -sn --disable=import-error apps <package>
 ```
+
+Pre-commit hooks (black, isort, pylint) are also configured in `.pre-commit-config.yaml`.
 
