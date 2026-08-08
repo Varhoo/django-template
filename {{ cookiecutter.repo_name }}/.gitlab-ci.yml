@@ -1,4 +1,5 @@
 stages:
+  - lint
   - build
   - test
   - deploy
@@ -7,35 +8,59 @@ variables:
   IMAGE_COMMIT: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHA
   IMAGE_BRANCH: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
   IMAGE_LATEST: $CI_REGISTRY/$CI_PROJECT_PATH:latest
+  DOCKER_TLS_CERTDIR: "/certs"
 
-image: docker:17.06
+.docker_job:
+  image: docker:27-cli
+  services:
+    - name: docker:27-dind
+      alias: docker
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
 static-analysis:
-  stage: build
-  image: coala/base:0.11
+  stage: lint
+  image: python:3.13-slim-bookworm
+  variables:
+    PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  before_script:
+    - pip install --no-cache-dir "black==23.11.0" "isort==6.1.0" "toml"
   script:
-    - coala --non-interactive
+    - black --version
+    - black --line-length 120 --check apps/ {{ cookiecutter.package_name }}/ bin/
+    - isort --version
+    - isort --check-only --diff apps/ {{ cookiecutter.package_name }}/ bin/
 
 build:
+  extends: .docker_job
   stage: build
   script:
-    - docker build -t $IMAGE_COMMIT .
+    - docker pull "$IMAGE_LATEST" || true
+    - docker build --cache-from "$IMAGE_LATEST" -t "$IMAGE_COMMIT" -t "$IMAGE_BRANCH" .
+    - docker push "$IMAGE_COMMIT"
+    - docker push "$IMAGE_BRANCH"
 
 test:
   stage: test
   image: $IMAGE_COMMIT
+  needs: ["build"]
   script:
     - python manage.py test
 
 pylint:
   stage: test
   image: $IMAGE_COMMIT
+  needs: ["build"]
   script:
-    - pip install pylint && pylint apps {{ cookiecutter.package_name }}
+    - pip install --no-cache-dir "pylint==3.3.9"
+    - pylint -rn -sn --disable=import-error apps {{ cookiecutter.package_name }}
 
 push:
+  extends: .docker_job
   stage: deploy
+  needs: ["test", "pylint"]
   script:
-    - docker tag $IMAGE_COMMIT $IMAGE_LATEST
-    - docker push $IMAGE_LATEST
+    - docker pull "$IMAGE_COMMIT"
+    - docker tag "$IMAGE_COMMIT" "$IMAGE_LATEST"
+    - docker push "$IMAGE_LATEST"
   when: manual
