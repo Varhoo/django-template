@@ -7,9 +7,7 @@
     "_copy_without_render": [
         "*.html",
 	"ansible/*",
-        "apps/*",
-        ".coafile",
-        "README.md"
+        "apps/*"
     ]
 }
 

@@ -1,46 +1,31 @@
-# Default Django project
+# django-template
+
+Cookiecutter template for a Docker-ready Django project with Ansible deployment and GitLab CI.
 
 Author: Pavel Studeník
 
-A Cookiecutter template for deploying a Django project in a Docker image using an Ansible script for production.
+## What you get
 
-The project serves as a template, but it can be built and run with default settings. 
-To build the Docker image locally, you can use the following command:
+A generated project includes:
 
-```
-docker build -t proj .
-```
+- Django + Django REST framework on Python 3.13
+- `apps/core` starter app with basic views and tests
+- Docker image (Alpine + uWSGI) and `docker-compose` for local runs
+- Split settings (`basic` / `production`)
+- Ansible playbooks for registry publish and host deploy
+- GitLab CI: lint → build → test → manual image push
+- Code quality: black, isort, pylint, pre-commit
+- `bin/generate_secret_key.py` for Django `SECRET_KEY` values
 
-For deploying in production, an Ansible script is used. The file config/hosts.ini contains the hostname of the target server.
+## Create a project
 
-```
-ansible-playbook -i config/hosts.ini ansible/release.yaml
-```
-
-# Using
-
-Create new project with default configuration:
-
-```
+```bash
 pip install cookiecutter
 cookiecutter https://github.com/Varhoo/django-template
 ```
 
-# Testing
+Prompts cover author, repo name, and package name (dashes become underscores). After generation, a unique `SECRET_KEY` is written into settings.
 
-The easiest way to check code is with the project Makefile:
+## Next steps
 
-```
-make check
-```
-
-Or run the tools directly (from a generated project):
-
-```
-black --line-length 120 --check apps/ <package>/ bin/
-isort --check-only --diff apps/ <package>/ bin/
-pylint -rn -sn --disable=import-error apps <package>
-```
-
-Pre-commit hooks (black, isort, pylint) are also configured in `.pre-commit-config.yaml`.
-
+See the generated project's `README.md` for local development, Docker, database setup, and production deploy.
