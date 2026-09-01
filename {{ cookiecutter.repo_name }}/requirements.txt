@@ -10,7 +10,7 @@ django==6.0.5
     # via
     #   -r requirements.in
     #   djangorestframework
-djangorestframework==3.16.1
+djangorestframework==3.17.2
     # via -r requirements.in
 psycopg2-binary==2.9.11
     # via -r requirements.in
